@@ -35,11 +35,11 @@ class set : public std::set<int>
 
 typedef std::map<int, set> row;
 typedef std::map<int, row> table;
-std::map<N, std::string[2][2]> variables;
+// std::map<N, std::string[2][2]> variables;
 std::map<N, char> terminals;
 typedef std::array<N, 2> combination;
 typedef std::array<combination, 2> productions;
-std::map<N, productions> mymap;
+std::map<N, productions> variables;
 
 void print(set &a) {
     std::set<int>::iterator i = a.begin();
@@ -63,15 +63,46 @@ int main(int argc, const char *argv[])
     for(int i = 0; i < 3; i++) {
         std::map<N, char>::iterator it = terminals.begin();
         while(it != terminals.end()) {
-            // std::cout << it->first << ": " << it->second << " ";
             if (it->second == s[i]) {
-                // std::cout << it->second << " & " << s[i] << " are equal";
                 t[i][1].insert(it->first);
             }
             it++;
         }
-        // std::cout << std::endl;
     }
+
+    combination comS = {Cl, D1};
+    productions prodS = {comS};
+    variables.insert(std::pair<N, productions>(S, prodS));
+
+    combination comR = {Cc, D1};
+    productions prodR = {comR};
+    variables.insert(std::pair<N, productions>(R, prodR));
+
+    combination comD1 = {S, R};
+    productions prodD1 = {comD1};
+    variables.insert(std::pair<N, productions>(R, prodD1));
+
+    // for(int j = 1; j < 3; j++) {
+    //     for(int i = 0; i < (3-j+1); i++) {
+    //         set G;
+    //         for(int k = 0; k < (j-1); k++) {
+    //             if (t[i][k].size == 0 || t[i+k][j-k].size == 0) {
+    //                 continue;
+    //             } else {
+    //                 // combination comb  = 
+    //                 // t[i][k] = t[i+k][j-k];
+
+    //                 std::map<N, productions>::iterator it = variables.begin();
+    //                 while(it != variables.end()) {
+    //                     if (it->second[0] == t[i][k]) {
+    //                         t[i][1].insert(it->first);
+    //                     }
+    //                     it++;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     print(t[0][1]);
     print(t[1][1]);
