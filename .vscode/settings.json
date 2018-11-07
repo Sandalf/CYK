@@ -21,6 +21,8 @@
         "typeinfo": "cpp",
         "algorithm": "cpp",
         "array": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "set": "cpp",
+        "__tree": "cpp"
     }
 }
