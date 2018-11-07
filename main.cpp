@@ -117,10 +117,6 @@ int main(int argc, const char *argv[])
 
     // return 0;
 
-    combination comD1 = {S, R};
-    productions prodD1 = {comD1};
-    variables.insert(std::pair<N, productions>(R, prodD1));
-
     combination comS = {Cl, D1};
     productions prodS = {comS};
     variables.insert(std::pair<N, productions>(S, prodS));
@@ -128,6 +124,10 @@ int main(int argc, const char *argv[])
     combination comR = {Cc, D1};
     productions prodR = {comR};
     variables.insert(std::pair<N, productions>(R, prodR));
+
+    combination comD1 = {S, R};
+    productions prodD1 = {comD1};
+    variables.insert(std::pair<N, productions>(D1, prodD1));
 
     for(int j = 2; j <= 3; j++) {
         std::cout << "j: " << j << std::endl;
@@ -138,6 +138,10 @@ int main(int argc, const char *argv[])
                 std::cout << "k: " << k << std::endl;
                 std::map<N, productions>::iterator it = variables.begin();
                 while(it != variables.end()) {
+                    std::cout << "Generator: ";
+                    printGenerator(it->first);
+                    std::cout << std::endl;
+
                     std::cout << "t[i][k]: " << "t[" << i << "][" << k << "]" << std::endl;
                     std::cout << "t[i+k][j-k]: " << "t[" << (i+k) << "][" << (j-k) << "]" << std::endl;
                     // print(t[k][i]);
@@ -149,6 +153,10 @@ int main(int argc, const char *argv[])
                         printGenerator(it->second[0][1]);
                         std::cout << std::endl;
                         t[i][j].insert(it->first);
+                        std::cout << "Inserted "; 
+                        printGenerator(it->first);
+                        std::cout << "in [i][j]: " << "t[" << i << "][" << j << "]" << std::endl;
+                        print(t[i][j]);
                     } else {
                         // printGenerator(it->second[0][0]);
                         std::cout << "No match found: ";
@@ -186,16 +194,23 @@ int main(int argc, const char *argv[])
             }
         }
     }
+    
+    std::cout << "     1  " << "  2  " << "  3  " << std::endl;
+    std::cout << "   +---+" << "+---+" << "+---+" << std::endl;
+    std::cout << " 1 |"; print(t[1][1]); std::cout << "|" << "|"; print(t[1][2]); std::cout << "|" << "|"; print(t[1][3]); std::cout << "|" << std::endl;
+    std::cout << "   +---+" << "+---+" << "+---+" << std::endl;
+    std::cout << "   +---+" << "+---+" << std::endl;
+    std::cout << " 2 |";  print(t[2][1]); std::cout <<  "|" << "|"; print(t[2][2]); std::cout <<"|" << std::endl;
+    std::cout << "   +---+" << "+---+" << std::endl;
+    std::cout << "   +---+" << std::endl;
+    std::cout << " 3 |";  print(t[3][1]); std::cout << "|" << std::endl;
+    std::cout << "   +---+" << std::endl;
 
-    std::cout << "+---+" << "+---+" << "+---+" << std::endl;
-    std::cout << "|"; print(t[0][0]); std::cout << "|" << "|"; print(t[0][1]); std::cout << "|" << "|"; print(t[0][2]); std::cout << "|" << std::endl;
-    std::cout << "+---+" << "+---+" << "+---+" << std::endl;
-    std::cout << "+---+" << "+---+" << std::endl;
-    std::cout << "|";  print(t[1][0]); std::cout <<  "|" << "|"; print(t[1][1]); std::cout <<"|" << std::endl;
-    std::cout << "+---+" << "+---+" << std::endl;
-    std::cout << "+---+" << std::endl;
-    std::cout << "|";  print(t[2][0]); std::cout << "|" << std::endl;
-    std::cout << "+---+" << std::endl;
+    if(t[1][3].find(S)) {
+        std::cout << "Word is accepted by grammar" << std::endl;
+    } else {
+        std::cout << "Word is not accepted by grammar" << std::endl;
+    }
 
     // print(t[0][1]);
     // print(t[1][1]);
