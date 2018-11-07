@@ -99,23 +99,23 @@ int main(int argc, const char *argv[])
         std::map<N, char>::iterator it = terminals.begin();
         while(it != terminals.end()) {
             if (it->second == s[i]) {
-                t[i][0].insert(it->first);
+                t[i+1][1].insert(it->first);
             }
             it++;
         }
     }
 
     std::cout << "+---+" << "+---+" << "+---+" << std::endl;
-    std::cout << "|"; print(t[0][0]); std::cout << "|" << "|"; print(t[0][1]); std::cout << "|" << "|"; print(t[0][2]); std::cout << "|" << std::endl;
+    std::cout << "|"; print(t[1][1]); std::cout << "|" << "|"; print(t[0][2]); std::cout << "|" << "|"; print(t[0][3]); std::cout << "|" << std::endl;
     std::cout << "+---+" << "+---+" << "+---+" << std::endl;
     std::cout << "+---+" << "+---+" << std::endl;
-    std::cout << "|";  print(t[1][0]); std::cout <<  "|" << "|"; print(t[1][1]); std::cout <<"|" << std::endl;
+    std::cout << "|";  print(t[2][1]); std::cout <<  "|" << "|"; print(t[1][2]); std::cout <<"|" << std::endl;
     std::cout << "+---+" << "+---+" << std::endl;
     std::cout << "+---+" << std::endl;
-    std::cout << "|";  print(t[2][0]); std::cout << "|" << std::endl;
+    std::cout << "|";  print(t[3][1]); std::cout << "|" << std::endl;
     std::cout << "+---+" << std::endl;
 
-    return 0;
+    // return 0;
 
     combination comD1 = {S, R};
     productions prodD1 = {comD1};
@@ -129,14 +129,12 @@ int main(int argc, const char *argv[])
     productions prodR = {comR};
     variables.insert(std::pair<N, productions>(R, prodR));
 
-    
-
-    for(int j = 1; j < 3; j++) {
+    for(int j = 2; j <= 3; j++) {
         std::cout << "j: " << j << std::endl;
-        for(int i = 0; i < (3-j+1); i++) {
+        for(int i = 1; i <= (3-j+1); i++) {
             std::cout << "i: " << i << std::endl;
             set G;
-            for(int k = 0; k < (j); k++) {
+            for(int k = 1; k <= (j-1); k++) {
                 std::cout << "k: " << k << std::endl;
                 std::map<N, productions>::iterator it = variables.begin();
                 while(it != variables.end()) {
@@ -144,8 +142,12 @@ int main(int argc, const char *argv[])
                     std::cout << "t[i+k][j-k]: " << "t[" << (i+k) << "][" << (j-k) << "]" << std::endl;
                     // print(t[k][i]);
                     // print(t[i+k][j-k]);
-                    if(t[k][i].find(it->second[0][0]) && t[i+k][j-k].find(it->second[0][1])) {
-                        std::cout << "Found match" << std::endl;
+                    if(t[i][k].find(it->second[0][0]) && t[i+k][j-k].find(it->second[0][1])) {
+                        std::cout << "Found match: ";
+                        printGenerator(it->second[0][0]);
+                        std::cout << ", ";
+                        printGenerator(it->second[0][1]);
+                        std::cout << std::endl;
                         t[i][j].insert(it->first);
                     } else {
                         // printGenerator(it->second[0][0]);
@@ -185,15 +187,25 @@ int main(int argc, const char *argv[])
         }
     }
 
-    print(t[0][1]);
-    print(t[1][1]);
-    print(t[2][1]);
+    std::cout << "+---+" << "+---+" << "+---+" << std::endl;
+    std::cout << "|"; print(t[0][0]); std::cout << "|" << "|"; print(t[0][1]); std::cout << "|" << "|"; print(t[0][2]); std::cout << "|" << std::endl;
+    std::cout << "+---+" << "+---+" << "+---+" << std::endl;
+    std::cout << "+---+" << "+---+" << std::endl;
+    std::cout << "|";  print(t[1][0]); std::cout <<  "|" << "|"; print(t[1][1]); std::cout <<"|" << std::endl;
+    std::cout << "+---+" << "+---+" << std::endl;
+    std::cout << "+---+" << std::endl;
+    std::cout << "|";  print(t[2][0]); std::cout << "|" << std::endl;
+    std::cout << "+---+" << std::endl;
 
-    print(t[0][2]);
-    print(t[1][2]);
+    // print(t[0][1]);
+    // print(t[1][1]);
+    // print(t[2][1]);
 
-    print(t[0][3]);
-    print(t[1][3]);
+    // print(t[0][2]);
+    // print(t[1][2]);
+
+    // print(t[0][3]);
+    // print(t[1][3]);
 
     // combination comb = {Cl, D1};
     // productions sProductions = {comb,comb};
