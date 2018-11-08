@@ -10,10 +10,10 @@ Cc -> c
 
 D1 -> SR
 
-C1 -> l
+Cl -> l
 
 # Test Data
-Here are some string accepted or rejected by the grammar
+Here are some strings accepted and rejected by the grammar.
 
 | Accepted        | Not Accepted |
 |-----------------|--------------|
