@@ -19,8 +19,8 @@ Here are some strings accepted and rejected by the grammar.
 |-----------------|--------------|
 | x               | lxl          |
 | lxr             | xx           |
-| llxr            | rlx          |
-| lxcx            | xllx         |
+| lxcllxrrr       | rlx          |
+| lxcxclxrr       | xllx         |
 | llxrr           | lllxxxrrr    |
 | lllxrcllxrrrcxr | rrlxl        |
 | lxcxr           | lxrr         |
