@@ -35,53 +35,9 @@ class set : public std::set<int>
 
 typedef std::map<int, set> row;
 typedef std::map<int, row> table;
-typedef std::array<N, 2> combination;
-typedef std::array<combination, 2> productions;
+typedef std::array<N, 2> production;
 std::map<N, char> terminals;
-std::map<N, productions> variables;
-
-void printGenerator(N i) {
-    if (i == 0) {
-        std::cout << "S" << " ";
-    } else if (i == 1) {
-        std::cout << "R" << " ";
-    } else if (i == 2) {
-        std::cout << "D1" << " ";
-    } else if (i == 3) {
-        std::cout << "D2" << " ";
-    } else if (i == 4) {
-        std::cout << "Cc" << " ";
-    } else if (i == 5) {
-        std::cout << "Cl" << " ";
-    }
-}
-
-void print(set &a) {
-    int items = 0;
-    std::set<int>::iterator i = a.begin();
-    while(i != a.end()) {
-        if (*i == 0) {
-            std::cout << "S " << " ";
-        } else if (*i == 1) {
-            std::cout << "R " << " ";
-        } else if (*i == 2) {
-            std::cout << "D1" << " ";
-        } else if (*i == 3) {
-            std::cout << "D2" << " ";
-        } else if (*i == 4) {
-            std::cout << "Cc" << " ";
-        } else if (*i == 5) {
-            std::cout << "Cl" << " ";
-        }
-
-        i++;
-        items++;
-    }
-
-    if (items == 0) {
-        std::cout << "   ";
-    }
-}
+std::map<N, production> variables;
 
 int length(char *w)
 {
@@ -114,25 +70,22 @@ int main(int argc, const char *argv[])
         }
     }
 
-    combination comS = {Cl, D1};
-    productions prodS = {comS};
-    variables.insert(std::pair<N, productions>(S, prodS));
+    production prodS = {Cl, D1};    
+    variables.insert(std::pair<N, production>(S, prodS));
 
-    combination comR = {Cc, D1};
-    productions prodR = {comR};
-    variables.insert(std::pair<N, productions>(R, prodR));
+    production prodR = {Cc, D1};    
+    variables.insert(std::pair<N, production>(R, prodR));
 
-    combination comD1 = {S, R};
-    productions prodD1 = {comD1};
-    variables.insert(std::pair<N, productions>(D1, prodD1));
+    production prodD1 = {S, R};    
+    variables.insert(std::pair<N, production>(D1, prodD1));
 
     for(int j = 2; j <= wLen; j++) {
         for(int i = 1; i <= (wLen-j+1); i++) {
             set G;
             for(int k = 1; k <= (j-1); k++) {
-                std::map<N, productions>::iterator it = variables.begin();
+                std::map<N, production>::iterator it = variables.begin();
                 while(it != variables.end()) {
-                    if(t[i][k].find(it->second[0][0]) && t[i+k][j-k].find(it->second[0][1])) {
+                    if(t[i][k].find(it->second[0]) && t[i+k][j-k].find(it->second[1])) {
                         t[i][j].insert(it->first);
                     }
                     it++;
