@@ -11,7 +11,6 @@
 #include <map>
 #include <string>
 #include <iterator>
-#include <algorithm>
 #include <array>
 
 typedef enum
@@ -19,7 +18,6 @@ typedef enum
     S,
     R,
     D1,
-    D2,
     Cc,
     Cl
 } N;
