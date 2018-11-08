@@ -144,7 +144,7 @@ int main(int argc, const char *argv[])
     if(t[1][wLen].find(S)) {
         std::cout << "Word is accepted by grammar" << std::endl;
     } else {
-        std::cout << "Word is not accepted by grammar" << std::endl;
+        std::cout << "Word is rejected by grammar" << std::endl;
     }
 
     return 0;

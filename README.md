@@ -15,7 +15,7 @@ Cl -> l
 # Test Data
 Here are some strings accepted and rejected by the grammar.
 
-| Accepted        | Not Accepted |
+| Accepted        | Rejected     |
 |-----------------|--------------|
 | x               | lxl          |
 | lxr             | xx           |
