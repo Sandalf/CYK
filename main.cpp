@@ -35,10 +35,9 @@ class set : public std::set<int>
 
 typedef std::map<int, set> row;
 typedef std::map<int, row> table;
-// std::map<N, std::string[2][2]> variables;
-std::map<N, char> terminals;
 typedef std::array<N, 2> combination;
 typedef std::array<combination, 2> productions;
+std::map<N, char> terminals;
 std::map<N, productions> variables;
 
 void printGenerator(N i) {
@@ -74,7 +73,7 @@ void print(set &a) {
         } else if (*i == 5) {
             std::cout << "Cl" << " ";
         }
-        // std::cout << *i << " ";
+
         i++;
         items++;
     }
@@ -82,20 +81,30 @@ void print(set &a) {
     if (items == 0) {
         std::cout << "   ";
     }
-    // std::cout << std::endl;
+}
+
+int length(char *w)
+{
+    int i = 0;
+    char *c = w;
+    for (i = 0; c[i] != '\0'; i++);
+    return i;
 }
 
 int main(int argc, const char *argv[])
 {
     table t;
-    char* s = (char*)"lxr";
+    // char* s = (char*)"lxr\0"; // accepted
+    // char* s = (char*)"lxcxr\0"; // accepted
+    char* s = (char*)"lxr\0"; // accepted
+    int wLen = length(s);
 
     terminals.insert(std::pair<N, char>(S, 'x'));
     terminals.insert(std::pair<N, char>(R, 'r'));
     terminals.insert(std::pair<N, char>(Cl, 'l'));
     terminals.insert(std::pair<N, char>(Cc, 'c'));
 
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < wLen; i++) {
         std::map<N, char>::iterator it = terminals.begin();
         while(it != terminals.end()) {
             if (it->second == s[i]) {
@@ -105,17 +114,15 @@ int main(int argc, const char *argv[])
         }
     }
 
-    std::cout << "+---+" << "+---+" << "+---+" << std::endl;
-    std::cout << "|"; print(t[1][1]); std::cout << "|" << "|"; print(t[0][2]); std::cout << "|" << "|"; print(t[0][3]); std::cout << "|" << std::endl;
-    std::cout << "+---+" << "+---+" << "+---+" << std::endl;
-    std::cout << "+---+" << "+---+" << std::endl;
-    std::cout << "|";  print(t[2][1]); std::cout <<  "|" << "|"; print(t[1][2]); std::cout <<"|" << std::endl;
-    std::cout << "+---+" << "+---+" << std::endl;
-    std::cout << "+---+" << std::endl;
-    std::cout << "|";  print(t[3][1]); std::cout << "|" << std::endl;
-    std::cout << "+---+" << std::endl;
-
-    // return 0;
+    // std::cout << "+---+" << "+---+" << "+---+" << std::endl;
+    // std::cout << "|"; print(t[1][1]); std::cout << "|" << "|"; print(t[0][2]); std::cout << "|" << "|"; print(t[0][3]); std::cout << "|" << std::endl;
+    // std::cout << "+---+" << "+---+" << "+---+" << std::endl;
+    // std::cout << "+---+" << "+---+" << std::endl;
+    // std::cout << "|";  print(t[2][1]); std::cout <<  "|" << "|"; print(t[1][2]); std::cout <<"|" << std::endl;
+    // std::cout << "+---+" << "+---+" << std::endl;
+    // std::cout << "+---+" << std::endl;
+    // std::cout << "|";  print(t[3][1]); std::cout << "|" << std::endl;
+    // std::cout << "+---+" << std::endl;
 
     combination comS = {Cl, D1};
     productions prodS = {comS};
@@ -129,121 +136,63 @@ int main(int argc, const char *argv[])
     productions prodD1 = {comD1};
     variables.insert(std::pair<N, productions>(D1, prodD1));
 
-    for(int j = 2; j <= 3; j++) {
-        std::cout << "j: " << j << std::endl;
-        for(int i = 1; i <= (3-j+1); i++) {
-            std::cout << "i: " << i << std::endl;
+    for(int j = 2; j <= wLen; j++) {
+        // std::cout << "j: " << j << std::endl;
+        for(int i = 1; i <= (wLen-j+1); i++) {
+            // std::cout << "i: " << i << std::endl;
             set G;
             for(int k = 1; k <= (j-1); k++) {
-                std::cout << "k: " << k << std::endl;
+                // std::cout << "k: " << k << std::endl;
                 std::map<N, productions>::iterator it = variables.begin();
                 while(it != variables.end()) {
-                    std::cout << "Generator: ";
-                    printGenerator(it->first);
-                    std::cout << std::endl;
+                    // std::cout << "Generator: ";
+                    // printGenerator(it->first);
+                    // std::cout << std::endl;
 
-                    std::cout << "t[i][k]: " << "t[" << i << "][" << k << "]" << std::endl;
-                    std::cout << "t[i+k][j-k]: " << "t[" << (i+k) << "][" << (j-k) << "]" << std::endl;
-                    // print(t[k][i]);
-                    // print(t[i+k][j-k]);
+                    // std::cout << "t[i][k]: " << "t[" << i << "][" << k << "]" << std::endl;
+                    // std::cout << "t[i+k][j-k]: " << "t[" << (i+k) << "][" << (j-k) << "]" << std::endl;
+
                     if(t[i][k].find(it->second[0][0]) && t[i+k][j-k].find(it->second[0][1])) {
-                        std::cout << "Found match: ";
-                        printGenerator(it->second[0][0]);
-                        std::cout << ", ";
-                        printGenerator(it->second[0][1]);
-                        std::cout << std::endl;
-                        t[i][j].insert(it->first);
-                        std::cout << "Inserted "; 
-                        printGenerator(it->first);
-                        std::cout << "in [i][j]: " << "t[" << i << "][" << j << "]" << std::endl;
-                        print(t[i][j]);
-                    } else {
+                        // std::cout << "Found match: ";
                         // printGenerator(it->second[0][0]);
-                        std::cout << "No match found: ";
-                        printGenerator(it->second[0][0]);
-                        std::cout << ", ";
-                        printGenerator(it->second[0][1]);
-                        std::cout << std::endl;
+                        // std::cout << ", ";
+                        // printGenerator(it->second[0][1]);
+                        // std::cout << std::endl;
+                        t[i][j].insert(it->first);
+                        // std::cout << "Inserted "; 
+                        // printGenerator(it->first);
+                        // std::cout << "in [i][j]: " << "t[" << i << "][" << j << "]" << std::endl;
+                        // print(t[i][j]);
+                    } else {
+                        // std::cout << "No match found: ";
+                        // printGenerator(it->second[0][0]);
+                        // std::cout << ", ";
+                        // printGenerator(it->second[0][1]);
+                        // std::cout << std::endl;
                     }
-                    std::cout  << std::endl;
+                    // std::cout  << std::endl;
                     it++;
                 }
-                    // std::set<int>::iterator it = t[i][k].begin();
-                    // while(it != t[i][k].end()) {
-                    //     std::set<int>::iterator it2 = t[i][k].begin();
-                    //     while(it2 != t[i][k].end()) {
-                    //         // std::cout << *it2 << " ";
-                    //         std::map<N, productions>::iterator it3 = variables.begin();
-                    //         while(it3 != variables.end()) {
-                    //             for(int l = 0; l < 2; l++) {
-                    //                 combination comb = {it, it2};
-                    //                 if (it == it3->second[0]) {
-
-                    //                 }
-                    //                 it3->second[l];
-                    //             }
-                    //             it3++;
-                    //         }
-
-                    //         it2++;
-                    //     }
-                    //     it++;
-                    // }
-                    // combination comb  = 
-                    // t[i][k] = t[i+k][j-k];
             }
         }
     }
     
-    std::cout << "     1  " << "  2  " << "  3  " << std::endl;
-    std::cout << "   +---+" << "+---+" << "+---+" << std::endl;
-    std::cout << " 1 |"; print(t[1][1]); std::cout << "|" << "|"; print(t[1][2]); std::cout << "|" << "|"; print(t[1][3]); std::cout << "|" << std::endl;
-    std::cout << "   +---+" << "+---+" << "+---+" << std::endl;
-    std::cout << "   +---+" << "+---+" << std::endl;
-    std::cout << " 2 |";  print(t[2][1]); std::cout <<  "|" << "|"; print(t[2][2]); std::cout <<"|" << std::endl;
-    std::cout << "   +---+" << "+---+" << std::endl;
-    std::cout << "   +---+" << std::endl;
-    std::cout << " 3 |";  print(t[3][1]); std::cout << "|" << std::endl;
-    std::cout << "   +---+" << std::endl;
+    // std::cout << "     1  " << "  2  " << "  3  " << std::endl;
+    // std::cout << "   +---+" << "+---+" << "+---+" << std::endl;
+    // std::cout << " 1 |"; print(t[1][1]); std::cout << "|" << "|"; print(t[1][2]); std::cout << "|" << "|"; print(t[1][3]); std::cout << "|" << std::endl;
+    // std::cout << "   +---+" << "+---+" << "+---+" << std::endl;
+    // std::cout << "   +---+" << "+---+" << std::endl;
+    // std::cout << " 2 |";  print(t[2][1]); std::cout <<  "|" << "|"; print(t[2][2]); std::cout <<"|" << std::endl;
+    // std::cout << "   +---+" << "+---+" << std::endl;
+    // std::cout << "   +---+" << std::endl;
+    // std::cout << " 3 |";  print(t[3][1]); std::cout << "|" << std::endl;
+    // std::cout << "   +---+" << std::endl;
 
-    if(t[1][3].find(S)) {
+    if(t[1][wLen].find(S)) {
         std::cout << "Word is accepted by grammar" << std::endl;
     } else {
         std::cout << "Word is not accepted by grammar" << std::endl;
     }
-
-    // print(t[0][1]);
-    // print(t[1][1]);
-    // print(t[2][1]);
-
-    // print(t[0][2]);
-    // print(t[1][2]);
-
-    // print(t[0][3]);
-    // print(t[1][3]);
-
-    // combination comb = {Cl, D1};
-    // productions sProductions = {comb,comb};
-    // mymap.insert(std::pair<N, productions> (S, sProductions));
-
-    // S -> x | ClD1
-    // variables.insert(std::pair<N, std::string[]>(S,{"",""}));
-    // variables[S] = new std::string[2];
-    // variables[S][0] = "x";
-    // variables[S][1] = "Cl D1";
-
-    // R -> r | CcD1
-    // variables[R][0] = "r";
-    // variables[R][1] = "Cc D1";
-
-    // Cc -> c
-    // terminals[Cc][0] = 'c';
-
-    // D1 -> SR
-    // variables[D1][0] = "S R";
-
-    // Cl -> l
-    // terminals[Cl][0] = 'l';
 
     return 0;
 }
